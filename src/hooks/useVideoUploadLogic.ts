@@ -9,7 +9,8 @@ export const useVideoUploadLogic = () => {
     video: null,
   });
   const [search, setSearch] = useState("");
-  const { uploading, error, playbackId, uploadVideo } = useMuxUpload();
+  const { uploading, error, playbackId, uploadVideo, progress } =
+    useMuxUpload();
   const { videos, loading, error: videosError, fetchVideos } = useVideos();
 
   const handleUpload = async () => {
@@ -27,6 +28,28 @@ export const useVideoUploadLogic = () => {
     }
   };
 
+  const deleteVideo = async (id: string) => {
+    const confirmDelete = window.confirm("¿Seguro que deseas eliminar este video?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/videos/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al eliminar el video");
+      }
+
+      // Actualiza la lista después de borrar
+      await fetchVideos();
+      alert("Video eliminado correctamente");
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar el video. Intenta nuevamente.");
+    }
+  };
+
   return {
     videoData,
     setVideoData,
@@ -35,10 +58,12 @@ export const useVideoUploadLogic = () => {
     uploading,
     error,
     playbackId,
+    progress,
     videos,
     loading,
     videosError,
     fetchVideos,
     handleUpload,
+    deleteVideo, // <-- Exportamos la función aquí
   };
 };

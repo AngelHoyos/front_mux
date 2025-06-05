@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { axiosInstance } from "@/api/axiosInstance";
+import { type Video } from "@/models/DataVideo/DataVideo";
 
-export interface VideoData {
-  id: string;
-  title: string;
-  playbackId: string;
-}
 
 export function useVideos() {
-  const [videos, setVideos] = useState<VideoData[]>([]);
+  const [videos, setVideos] = useState<Video[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +12,7 @@ export function useVideos() {
     setLoading(true);
     setError(null);
     try {
-      const res = await axiosInstance.get<VideoData[]>("/videos");
+      const res = await axiosInstance.get<Video[]>("/videos");
       setVideos(res.data);
     } catch {
       setError("Error cargando videos");

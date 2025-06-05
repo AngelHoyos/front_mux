@@ -1,12 +1,18 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+body {
+  background: url("/proyecto_moodle/src/assets/fondo.png") !important;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .logo {

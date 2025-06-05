@@ -17,7 +17,7 @@ export const BarProgress: React.FC<BarProgressProps> = ({ progress }) => {
         style={{
           height: "100%",
           width: `${validProgress}%`,
-          backgroundColor: "#5114A6", 
+          backgroundColor: "#fff133", 
           transition: "width 0.3s ease-in-out",
         }}
       />

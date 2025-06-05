@@ -11,7 +11,7 @@ export function useMuxUpload() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [playbackId, setPlaybackId] = useState<string | null>(null);
-
+  const [progress, setProgress] = useState(0);
   const getUploadUrl = async (): Promise<UploadResponse> => {
     try {
       const res = await axiosInstance.post<UploadResponse>("/upload", {});
@@ -26,6 +26,14 @@ export function useMuxUpload() {
       await axios.put(uploadUrl, file, {
         headers: {
           "Content-Type": file.type,
+        },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percent);
+          }
         },
       });
     } catch {
@@ -49,5 +57,5 @@ export function useMuxUpload() {
     }
   };
 
-  return { uploading, error, playbackId, uploadVideo };
+  return { uploading, error, progress, playbackId, uploadVideo };
 }
